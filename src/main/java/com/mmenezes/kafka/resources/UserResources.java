@@ -7,19 +7,21 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.mmenezes.kafka.model.User;
+
 @RestController
 @RequestMapping("kafka")
 public class UserResources {
 
 	private static final String TOPIC = "Kafka_Example";
 	@Autowired
-	KafkaTemplate<String, String> kafkaTemplate;
+	KafkaTemplate<String, User> kafkaTemplate;
 	
 	
-	@GetMapping("/publish/{message}")
-	public String post(@PathVariable("message") final String message) {
+	@GetMapping("/publish/{name}")
+	public String post(@PathVariable("name") final String name) {
 		
-		kafkaTemplate.send(TOPIC, message);
+		kafkaTemplate.send(TOPIC, new User(name, "Technology",12000L));
 		return "Publised successfuly";
 	}
 }
